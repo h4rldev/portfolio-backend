@@ -1,0 +1,14 @@
+[package]
+name = "portfolio-backend"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ntex = { version = "1.2.1", features = ["tokio", "compress"] }
+tokio = { version = "1.35.1", features = ["full"] }
+ntex-session = "0.4.0"
+ntex-files = "0.4.1"
+tracing = "0.1.40"
+tracing-subscriber = "0.3.18"

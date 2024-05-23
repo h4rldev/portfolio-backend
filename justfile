@@ -5,4 +5,4 @@ watch:
 
 build:
   @cargo build --release
-  @cp ./target/release/qrcode-analytic .
+  @cp ./target/release/portfolio-backend .

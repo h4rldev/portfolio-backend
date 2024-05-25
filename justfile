@@ -6,3 +6,7 @@ watch:
 build:
   @cargo build --release
   @cp ./target/release/portfolio-backend .
+
+update:
+  @just build
+  @mv ./portfolio-backend ../portfolio-frontend/portfolio-bin

@@ -17,7 +17,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(middleware::Compress::default())
             .wrap(middleware::DefaultHeaders::default()
                 .header("Content-Security-Policy", 
-                    "default-src 'self'; style-src 'self'; img-src 'self' https://http.cat/ data: blob:; font-src 'self' https://fonts.bunny.net/")
+                    "default-src 'self'; style-src 'self'; script-src 'nonce-Y9hZPQrVBZhw6dFMaWf2oQ'; img-src 'self' https://http.cat/ data: blob:; font-src 'self' https://fonts.bunny.net/")
             )
             .service(index)
             .route("/{filename}*", get().to(files))

@@ -1,4 +1,4 @@
-use http::{blog, files, index, projects};
+use http::{blog, cv, files, index, projects};
 use ntex::web::{get, middleware, App, HttpServer};
 
 mod http;
@@ -22,6 +22,7 @@ async fn main() -> std::io::Result<()> {
             .service(index)
             .service(blog)
             .service(projects)
+            .service(cv)
             .route("/{filename}*", get().to(files))
             .wrap(ntex::web::middleware::Logger::default())
     })

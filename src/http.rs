@@ -1,3 +1,4 @@
+use ntex::http::{Response, StatusCode};
 use ntex::web::{get, Error as WebError, HttpRequest, HttpResponse};
 use ntex_files::NamedFile;
 use std::{
@@ -52,6 +53,25 @@ pub async fn projects() -> Result<HttpResponse, WebError> {
     let mut file = File::open(projects_path)?;
     file.read_to_string(&mut content)?;
     return Ok(HttpResponse::Ok().content_type("text/html").body(content));
+}
+
+#[get("/cv")]
+pub async fn cv() -> Result<HttpResponse, WebError> {
+    let cv_path = Path::new("./assets").join("Oscar Sjödin Jansson - CV.pdf");
+    if cv_path.exists() {
+        Ok(Response::build(StatusCode::OK)
+            .header("Content-Type", "application/pdf")
+            .header(
+                "Content-Disposition",
+                format!(
+                    "attachment; filename=\"{}\"",
+                    cv_path.file_name().unwrap().to_str().unwrap()
+                ),
+            )
+            .finish())
+    } else {
+        Ok(Response::build(StatusCode::NOT_FOUND).body(b"File not found".to_vec()))
+    }
 }
 
 pub async fn files(req: HttpRequest) -> Result<HttpResponse, WebError> {

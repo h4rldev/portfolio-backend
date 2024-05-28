@@ -34,6 +34,26 @@ pub async fn index() -> Result<HttpResponse, WebError> {
     return Ok(HttpResponse::Ok().content_type("text/html").body(content));
 }
 
+#[get("/blog")]
+pub async fn blog() -> Result<HttpResponse, WebError> {
+    let mut content = String::new();
+    let blog_path = Path::new("./html").join("underconstruction.html");
+
+    let mut file = File::open(blog_path)?;
+    file.read_to_string(&mut content)?;
+    return Ok(HttpResponse::Ok().content_type("text/html").body(content));
+}
+
+#[get("/projects")]
+pub async fn projects() -> Result<HttpResponse, WebError> {
+    let mut content = String::new();
+    let projects_path = Path::new("./html").join("underconstruction.html");
+
+    let mut file = File::open(projects_path)?;
+    file.read_to_string(&mut content)?;
+    return Ok(HttpResponse::Ok().content_type("text/html").body(content));
+}
+
 pub async fn files(req: HttpRequest) -> Result<HttpResponse, WebError> {
     let path: PathBuf = req.match_info().query("filename").parse()?;
     let file = NamedFile::open(PathBuf::from("./").join(path));

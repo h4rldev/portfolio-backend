@@ -26,7 +26,7 @@ async fn main() -> std::io::Result<()> {
             .route("/{filename}*", get().to(files))
             .wrap(ntex::web::middleware::Logger::default())
     })
-    .bind("0.0.0.0:8080")?
+    .bind("0.0.0.0:4441")?
     .run()
     .await
 }

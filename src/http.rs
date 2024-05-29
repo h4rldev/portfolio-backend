@@ -1,4 +1,4 @@
-use ntex::http::{Response, StatusCode};
+use ntex::http::StatusCode;
 use ntex::web::{get, Error as WebError, HttpRequest, HttpResponse};
 use ntex_files::NamedFile;
 use std::{
@@ -6,6 +6,7 @@ use std::{
     io::Read,
     path::{Path, PathBuf},
 };
+use tokio::fs::read;
 
 pub async fn fourofour() -> Result<HttpResponse, WebError> {
     let mut content = String::new();
@@ -58,20 +59,18 @@ pub async fn projects() -> Result<HttpResponse, WebError> {
 #[get("/cv")]
 pub async fn cv() -> Result<HttpResponse, WebError> {
     let cv_path = Path::new("./assets").join("Oscar Sjödin Jansson - CV.pdf");
-    if cv_path.exists() {
-        Ok(Response::build(StatusCode::OK)
-            .header("Content-Type", "application/pdf")
-            .header(
-                "Content-Disposition",
-                format!(
-                    "attachment; filename=\"{}\"",
-                    cv_path.file_name().unwrap().to_str().unwrap()
-                ),
-            )
-            .finish())
-    } else {
-        Ok(Response::build(StatusCode::NOT_FOUND).body(b"File not found".to_vec()))
-    }
+    let file_contents = read(cv_path).await?;
+    let response = HttpResponse::build(StatusCode::OK)
+        .header("Content-Type", "application/octet-stream") // Set the appropriate MIME type
+        .header(
+            "Content-Disposition",
+            format!(
+                "attachment; filename=\"{}\"",
+                "Oscar Sjödin Jansson - CV.pdf"
+            ),
+        ) // Customize the filename as needed
+        .body(file_contents);
+    Ok(response)
 }
 
 pub async fn files(req: HttpRequest) -> Result<HttpResponse, WebError> {

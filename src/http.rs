@@ -61,7 +61,7 @@ pub async fn cv() -> Result<HttpResponse, WebError> {
     let cv_path = Path::new("./assets").join("Oscar Sjödin Jansson - CV.pdf");
     let file_contents = read(cv_path).await?;
     let response = HttpResponse::build(StatusCode::OK)
-        .header("Content-Type", "application/octet-stream") // Set the appropriate MIME type
+        .header("Content-Type", "application/pdf") // Set the appropriate MIME type
         .header(
             "Content-Disposition",
             format!(

@@ -8,14 +8,14 @@ use std::{
 };
 use tokio::fs::read;
 
-pub async fn fourofour() -> Result<HttpResponse, WebError> {
+pub async fn not_found() -> Result<HttpResponse, WebError> {
     let mut content = String::new();
 
-    let fourofour_path = Path::new("./html").join("notfound.html");
+    let not_found_path = Path::new("./html").join("not-found.html");
 
-    if fourofour_path.is_file() {
-        let mut fourofour_file = File::open(fourofour_path)?;
-        fourofour_file.read_to_string(&mut content)?;
+    if not_found_path.is_file() {
+        let mut not_found_file = File::open(not_found_path)?;
+        not_found_file.read_to_string(&mut content)?;
         return Ok(HttpResponse::NotFound()
             .content_type("text/html")
             .body(content));
@@ -39,7 +39,7 @@ pub async fn index() -> Result<HttpResponse, WebError> {
 #[get("/blog")]
 pub async fn blog() -> Result<HttpResponse, WebError> {
     let mut content = String::new();
-    let blog_path = Path::new("./html").join("underconstruction.html");
+    let blog_path = Path::new("./html").join("under-construction.html");
 
     let mut file = File::open(blog_path)?;
     file.read_to_string(&mut content)?;
@@ -79,5 +79,5 @@ pub async fn files(req: HttpRequest) -> Result<HttpResponse, WebError> {
     if file.is_ok() {
         return Ok(file?.into_response(&req));
     }
-    fourofour().await
+    not_found().await
 }

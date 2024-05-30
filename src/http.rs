@@ -49,7 +49,7 @@ pub async fn blog() -> Result<HttpResponse, WebError> {
 #[get("/projects")]
 pub async fn projects() -> Result<HttpResponse, WebError> {
     let mut content = String::new();
-    let projects_path = Path::new("./html").join("underconstruction.html");
+    let projects_path = Path::new("./html").join("projects.html");
 
     let mut file = File::open(projects_path)?;
     file.read_to_string(&mut content)?;

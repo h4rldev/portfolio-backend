@@ -1,6 +1,8 @@
+use config::Config;
 use http::{blog, cv, files, index, projects};
 use ntex::web::{get, middleware, App, HttpServer};
 
+mod config;
 mod http;
 
 /*
@@ -12,12 +14,27 @@ mod http;
 async fn main() -> std::io::Result<()> {
     tracing_subscriber::fmt::init();
 
+    let config = Config::get();
+    let ip = config.ip();
+    let port = config.port();
+    let custom_headers =
+        if config.custom_header_key().is_some() && config.custom_header_value().is_some() {
+            (
+                config.custom_header_key().expect("Can't get header key"),
+                config
+                    .custom_header_value()
+                    .expect("Can't get header value"),
+            )
+        } else {
+            ("".to_string(), "".to_string())
+        };
+
     HttpServer::new(move || {
         App::new()
             .wrap(middleware::Compress::default())
-            .wrap(middleware::DefaultHeaders::default()
-                .header("Content-Security-Policy", 
-                    "default-src 'self'; style-src 'self'; script-src 'nonce-Y9hZPQrVBZhw6dFMaWf2oQ'; img-src 'self' https://http.cat/ data: blob:; font-src 'self' https://fonts.bunny.net/")
+            .wrap(
+                middleware::DefaultHeaders::default()
+                    .header(custom_headers.0.clone(), custom_headers.1.clone()),
             )
             .service(index)
             .service(blog)
@@ -26,7 +43,7 @@ async fn main() -> std::io::Result<()> {
             .route("/{filename}*", get().to(files))
             .wrap(ntex::web::middleware::Logger::default())
     })
-    .bind("0.0.0.0:4441")?
+    .bind(format!("{}:{}", ip, port))?
     .run()
     .await
 }

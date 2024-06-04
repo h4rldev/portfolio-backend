@@ -58,7 +58,19 @@ pub async fn projects() -> Result<HttpResponse, WebError> {
 
 #[get("/cv")]
 pub async fn cv() -> Result<HttpResponse, WebError> {
-    let cv_path = Path::new("./assets").join("Oscar Sjödin Jansson - CV.pdf");
+    let mut content = String::new();
+    let cv_path = Path::new("./html").join("cv.html");
+
+    let mut file = File::open(cv_path)?;
+    file.read_to_string(&mut content)?;
+    return Ok(HttpResponse::Ok().content_type("text/html").body(content));
+}
+
+#[get("/cv/eng")]
+pub async fn cv_english() -> Result<HttpResponse, WebError> {
+    let cv_path = Path::new("./assets")
+        .join("cvs")
+        .join("Oscar_Sjodin_Jansson_-_CV_-_English.pdf");
     let file_contents = read(cv_path).await?;
     let response = HttpResponse::build(StatusCode::OK)
         .header("Content-Type", "application/pdf") // Set the appropriate MIME type
@@ -66,7 +78,26 @@ pub async fn cv() -> Result<HttpResponse, WebError> {
             "Content-Disposition",
             format!(
                 "attachment; filename=\"{}\"",
-                "Oscar Sjödin Jansson - CV.pdf"
+                "Oscar Sjödin Jansson - CV - English.pdf"
+            ),
+        ) // Customize the filename as needed
+        .body(file_contents);
+    Ok(response)
+}
+
+#[get("/cv/sv")]
+pub async fn cv_swedish() -> Result<HttpResponse, WebError> {
+    let cv_path = Path::new("./assets")
+        .join("cvs")
+        .join("Oscar_Sjodin_Jansson_-_CV_-_Swedish.pdf");
+    let file_contents = read(cv_path).await?;
+    let response = HttpResponse::build(StatusCode::OK)
+        .header("Content-Type", "application/pdf") // Set the appropriate MIME type
+        .header(
+            "Content-Disposition",
+            format!(
+                "attachment; filename=\"{}\"",
+                "Oscar Sjödin Jansson - CV - Swedish.pdf"
             ),
         ) // Customize the filename as needed
         .body(file_contents);

@@ -26,7 +26,7 @@ async fn main() -> std::io::Result<()> {
                     .expect("Can't get header value"),
             )
         } else {
-            ("".to_string(), "".to_string())
+            ("Empty-Header".to_string(), "Ignore".to_string())
         };
 
     HttpServer::new(move || {

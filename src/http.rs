@@ -56,16 +56,6 @@ pub async fn projects() -> Result<HttpResponse, WebError> {
     return Ok(HttpResponse::Ok().content_type("text/html").body(content));
 }
 
-#[get("/cv")]
-pub async fn cv() -> Result<HttpResponse, WebError> {
-    let mut content = String::new();
-    let cv_path = Path::new("./html").join("cv.html");
-
-    let mut file = File::open(cv_path)?;
-    file.read_to_string(&mut content)?;
-    return Ok(HttpResponse::Ok().content_type("text/html").body(content));
-}
-
 #[get("/cv/eng")]
 pub async fn cv_english() -> Result<HttpResponse, WebError> {
     let cv_path = Path::new("./assets")

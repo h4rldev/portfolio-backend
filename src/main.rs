@@ -31,11 +31,15 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         App::new()
-            .wrap(middleware::Compress::default())
             .wrap(
                 middleware::DefaultHeaders::default()
                     .header(custom_headers.0.clone(), custom_headers.1.clone()),
             )
+            .wrap(
+                middleware::DefaultHeaders::default()
+                    .header("Cache-Control", "max-age=604800, public"),
+            )
+            .wrap(middleware::Compress::default())
             .service(index)
             .service(blog)
             .service(projects)

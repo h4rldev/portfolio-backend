@@ -1,5 +1,5 @@
 use config::Config;
-use http::{blog, cv_english, cv_swedish, files, index, projects};
+use http::{blog, cv_english, cv_swedish, files, index};
 use ntex::web::{get, middleware, App, HttpServer};
 
 mod config;
@@ -42,7 +42,6 @@ async fn main() -> std::io::Result<()> {
             .wrap(middleware::Compress::default())
             .service(index)
             .service(blog)
-            .service(projects)
             .service(cv_english)
             .service(cv_swedish)
             .route("/{filename}*", get().to(files))

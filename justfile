@@ -1,12 +1,12 @@
-default: watch
+@default: 
+  just --list
 
-watch:
-  @cargo watch -x "run --release"
+@watch:
+  cargo watch -x "run --release"
 
-build:
-  @cargo build --release
-  @cp ./target/release/portfolio-backend .
+@build:
+  cargo build --release
+  cp ./target/release/portfolio-backend .
 
-update:
-  @just build
-  @mv ./portfolio-backend ../portfolio-frontend/portfolio-bin
+@update: build
+  mv ./portfolio-backend ../portfolio-frontend/portfolio-bin

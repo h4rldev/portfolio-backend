@@ -6,7 +6,7 @@
 
 @build:
   cargo build --release
-  cp ./target/release/portfolio-backend .
+  cp ./target/release/www-backend ./www-bin
 
 @update: build
-  mv ./portfolio-backend ../portfolio-frontend/portfolio-bin
+  mv ./www-bin ../www-frontend/

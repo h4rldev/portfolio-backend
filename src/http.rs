@@ -48,9 +48,7 @@ pub async fn blog() -> Result<HttpResponse, WebError> {
 
 #[get("/cv/eng")]
 pub async fn cv_english() -> Result<HttpResponse, WebError> {
-    let cv_path = Path::new("./assets")
-        .join("cvs")
-        .join("Oscar_Sjodin_Jansson_-_CV_-_English.pdf");
+    let cv_path = Path::new("./assets").join("cvs").join("CV_-_English.pdf");
     let file_contents = read(cv_path).await?;
     let response = HttpResponse::build(StatusCode::OK)
         .header("Content-Type", "application/pdf") // Set the appropriate MIME type
@@ -67,9 +65,7 @@ pub async fn cv_english() -> Result<HttpResponse, WebError> {
 
 #[get("/cv/sv")]
 pub async fn cv_swedish() -> Result<HttpResponse, WebError> {
-    let cv_path = Path::new("./assets")
-        .join("cvs")
-        .join("Oscar_Sjodin_Jansson_-_CV_-_Swedish.pdf");
+    let cv_path = Path::new("./assets").join("cvs").join("CV_-_Swedish.pdf");
     let file_contents = read(cv_path).await?;
     let response = HttpResponse::build(StatusCode::OK)
         .header("Content-Type", "application/pdf") // Set the appropriate MIME type
